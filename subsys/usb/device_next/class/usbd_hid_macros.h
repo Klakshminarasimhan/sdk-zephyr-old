@@ -91,9 +91,7 @@
  * If all the endpoint MPS are less than 65 bytes, we do not need to define and
  * configure an alternate interface.
  */
-#define HID_ALL_MPS_LESS_65(n)							\
-	COND_CODE_1(HID_MPS_LESS_65(DT_INST_PROP_OR(n, out_report_size, 0)),	\
-		(HID_MPS_LESS_65(DT_INST_PROP(n, in_report_size))), (0))
+#define HID_ALL_MPS_LESS_65(n) 1
 
 /* Get IN endpoint polling rate based on the desired speed. */
 #define HID_IN_EP_INTERVAL(n, hs)						\
@@ -152,7 +150,7 @@
  * MPS for the default interface is always limited to 64 bytes.
  */
 #define HID_OUT_EP_MPS(n, alt)							\
-	COND_CODE_1(alt,							\
+	COND_CODE_1(1,							\
 	(sys_cpu_to_le16(USB_TPL_TO_MPS(DT_INST_PROP(n, out_report_size)))),	\
 	(sys_cpu_to_le16(MIN(DT_INST_PROP(n, out_report_size), 64U))))
 
@@ -161,7 +159,7 @@
  * MPS for the default interface is always limited to 64 bytes.
  */
 #define HID_IN_EP_MPS(n, alt)							\
-	COND_CODE_1(alt,							\
+	COND_CODE_1(1,							\
 	(sys_cpu_to_le16(USB_TPL_TO_MPS(DT_INST_PROP(n, in_report_size)))),	\
 	(sys_cpu_to_le16(MIN(DT_INST_PROP(n, in_report_size), 64U))))
 
