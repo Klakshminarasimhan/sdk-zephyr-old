@@ -463,13 +463,13 @@ static inline void *usbd_class_get_private(const struct usbd_class_data *const c
 #define USBD_DESC_LANG_DEFINE(name)					\
 	static uint16_t langid_##name = sys_cpu_to_le16(0x0409);	\
 	static struct usbd_desc_node name = {				\
-		.bLength = sizeof(struct usb_string_descriptor),	\
-		.bDescriptorType = USB_DESC_STRING,			\
 		.str = {						\
 			.idx = 0,					\
 			.utype = USBD_DUT_STRING_LANG,			\
 		},							\
-		.ptr = &langid_##name,					\
+		.ptr = &langid_##name,					        \
+		.bLength = sizeof(struct usb_string_descriptor),	\
+		.bDescriptorType = USB_DESC_STRING,			\
 	}
 
 /**
@@ -490,9 +490,9 @@ static inline void *usbd_class_get_private(const struct usbd_class_data *const c
 			.utype = d_utype,					\
 			.ascii7 = true,						\
 		},								\
+		.ptr = &ascii_##d_name,					\
 		.bLength = USB_STRING_DESCRIPTOR_LENGTH(d_string),		\
 		.bDescriptorType = USB_DESC_STRING,				\
-		.ptr = &ascii_##d_name,					\
 	}
 
 /**
@@ -542,6 +542,18 @@ static inline void *usbd_class_get_private(const struct usbd_class_data *const c
 		},								\
 		.bDescriptorType = USB_DESC_STRING,				\
 	}
+
+/**
+ * @brief Create a string descriptor node and serial number string descriptor
+ *
+ * This macro defines a descriptor node that, when added to the device context,
+ * is automatically used as the serial number string descriptor. 
+ * The serial number is generated from the provided string.
+ *
+ * @param d_name   String descriptor node identifier.
+ */
+#define USBD_DESC_SERIAL_NUMBER_DEFINE_WITHOUT_HWINFO(d_name, d_string)					\
+	USBD_DESC_STRING_DEFINE(d_name, d_string, USBD_DUT_STRING_SERIAL_NUMBER)
 
 /**
  * @brief Define BOS Device Capability descriptor node
